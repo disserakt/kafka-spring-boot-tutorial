@@ -10,7 +10,7 @@ public class Listener {
 
     Logger logger = LoggerFactory.getLogger(Listener.class);
 
-    @KafkaListener(topics = {"test.topic.json"})
+    @KafkaListener(topics = {"test.topic.plain.text"})
     public void listen(String message) {
         logger.info("Received message: {}", message);
     }

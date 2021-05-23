@@ -25,7 +25,7 @@ public class Sender {
     public void sendMessage() {
         String data = "{\"payload\":\"Hello, world!\",\"timestamp\":" + Instant.now().toEpochMilli() + "}";
         ListenableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(
-                "test.topic.json",
+                "test.topic.plain.text",
                 UUID.randomUUID().toString(),
                 data
         );
