@@ -1,11 +1,11 @@
 package ru.netology.kafka;
 
-public class TestEvent {
+public class PayloadTimestampMessage {
 
-    public TestEvent() {
+    public PayloadTimestampMessage() {
     }
 
-    public TestEvent(String payload, long timestamp) {
+    public PayloadTimestampMessage(String payload, long timestamp) {
         this.payload = payload;
         this.timestamp = timestamp;
     }

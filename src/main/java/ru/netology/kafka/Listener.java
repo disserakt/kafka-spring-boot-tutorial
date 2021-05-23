@@ -10,8 +10,8 @@ public class Listener {
 
     Logger logger = LoggerFactory.getLogger(Listener.class);
 
-    @KafkaListener(topics = {"test.topic.json"})
-    public void listen(String message) {
+    @KafkaListener(topics = {"test.topic.json"}, containerFactory = "messageListener")
+    public void listen(PayloadTimestampMessage message) {
         logger.info("Received message: {}", message);
     }
 

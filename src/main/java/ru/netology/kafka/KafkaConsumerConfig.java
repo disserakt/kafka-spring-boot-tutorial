@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.Map;
 
@@ -14,18 +15,17 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory(KafkaProperties properties) {
+    public ConsumerFactory<String, PayloadTimestampMessage> consumerFactory(KafkaProperties properties) {
         Map<String, Object> props = properties.buildConsumerProperties();
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new StringDeserializer());
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(PayloadTimestampMessage.class, false));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> messageListener(ConsumerFactory<String, String> consumerFactory) {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, PayloadTimestampMessage> messageListener(ConsumerFactory<String, PayloadTimestampMessage> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, PayloadTimestampMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         return factory;
     }
-
 
 
 }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.Map;
 
@@ -14,13 +15,13 @@ import java.util.Map;
 public class KafkaProducerConfig {
 
     @Bean
-    public ProducerFactory<String, String> producerFactory(KafkaProperties properties) {
+    public ProducerFactory<String, PayloadTimestampMessage> producerFactory(KafkaProperties properties) {
         Map<String, Object> configProps = properties.buildProducerProperties();
-        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), new StringSerializer());
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), new JsonSerializer<>());
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+    public KafkaTemplate<String, PayloadTimestampMessage> kafkaTemplate(ProducerFactory<String, PayloadTimestampMessage> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 

@@ -19,12 +19,12 @@ public class Sender {
     Logger logger = LoggerFactory.getLogger(Sender.class);
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, PayloadTimestampMessage> kafkaTemplate;
 
     @Scheduled(fixedDelay = 1000L)
     public void sendMessage() {
-        String data = "{\"payload\":\"Hello, world!\",\"timestamp\":" + Instant.now().toEpochMilli() + "}";
-        ListenableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(
+        PayloadTimestampMessage data = new PayloadTimestampMessage("Hello, world!", Instant.now().toEpochMilli());
+        ListenableFuture<SendResult<String, PayloadTimestampMessage>> sendResult = kafkaTemplate.send(
                 "test.topic.json",
                 UUID.randomUUID().toString(),
                 data
@@ -37,7 +37,7 @@ public class Sender {
             }
 
             @Override
-            public void onSuccess(SendResult<String, String> result) {
+            public void onSuccess(SendResult<String, PayloadTimestampMessage> result) {
                 logger.info("Successfully sent message: {}", result.getProducerRecord().value());
             }
         });
